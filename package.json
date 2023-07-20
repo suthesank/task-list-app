@@ -10,6 +10,7 @@
     "@types/react-dom": "latest",
     "react": "latest",
     "react-dom": "latest",
+    "react-router-dom": "^6.14.2",
     "react-scripts": "latest",
     "typescript": "latest"
   },
