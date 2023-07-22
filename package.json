@@ -6,6 +6,7 @@
     "@emotion/react": "latest",
     "@emotion/styled": "latest",
     "@mui/material": "latest",
+    "@mui/x-charts": "^6.0.0-alpha.4",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "react": "latest",

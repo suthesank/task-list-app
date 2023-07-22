@@ -19,13 +19,16 @@ const Layout = () => {
                 height: 72,
                 display: "flex",
                 alignItems: "center",
+                justifyContent: "center",
                 backgroundColor: "#FFFFFF",
-                boxShadow: "0px 3px 6px #00000029"
+                boxShadow: "0px 3px 6px #00000029",
             }}>
                 <Container sx={{
                     maxWidth: "960px !important",
+                    padding: "unset !important",
                     display: "flex",
-                    justifyContent: "space-between"
+                    justifyContent: "space-between",
+                    marginX: "24px"
                 }}>
                     <Box sx={{
                         display: "flex",
@@ -41,11 +44,29 @@ const Layout = () => {
                     <Button onClick={handleLogout} sx={{ color: "#6D8187" }} >Logout</Button>
                 </Container>
             </Box>
-            <Container sx={{
-                maxWidth: "960px !important",
+            <Box sx={{
+                display: "flex",
+                justifyContent: "center",
+                height: {
+                    md: "calc(100vh - 72px)"
+                }
             }}>
-                <Outlet />
-            </Container>
+                <Container sx={{
+                    maxWidth: "960px !important",
+                    paddingX: "unset !important",
+                    paddingY: {
+                        xs: "12px",
+                        md: "22px"
+                    },
+                    marginX: {
+                        xs: "unset",
+                        md: "24px"
+                    }
+                }}>
+                    <Outlet />
+                </Container>
+            </Box>
+
         </Box>
     )
 }

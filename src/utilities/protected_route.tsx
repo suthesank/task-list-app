@@ -1,10 +1,11 @@
-import { Box, Button, Card, TextField, Typography } from "@mui/material"
+import { Box, Button, Card, Typography } from "@mui/material"
 import * as React from "react"
 import { Outlet } from "react-router-dom"
+import { useAppContext } from "../context/context_provider"
 
 const ProtectedRoute = () => {
 
-    const [loginState, setLoginState] = React.useState<null | boolean>(null)
+    const { loginState, setLoginState } = useAppContext()
 
     const handleLogin = () => {
         localStorage.setItem("loginCreds", "true")
@@ -41,26 +42,47 @@ const ProtectedRoute = () => {
                     padding: "24px 24px 33px 24px",
                     borderRadius: "12px",
                 }}>
-                    <Typography>Login</Typography>
-                    <TextField
-                        sx={{
-                            backgroundColor: "#EEF1F8",
-                        }}
-                        label="Id"
-                        variant="outlined"
-                        margin="dense"
-                        size="small"
-                    />
-                    <TextField
-                        sx={{
-                            backgroundColor: "#EEF1F8",
-                        }}
-                        label="Name"
-                        variant="outlined"
-                        margin="dense"
-                        size="small"
-                    />
-                    <Button variant="contained" onClick={handleLogin}>Login</Button>
+                    <Typography fontSize="20px" color="#537178">Login</Typography>
+
+                    <Box sx={{
+                        display: 'grid',
+                        gap: "12px",
+                        gridTemplateRows: "repeat(3, 1fr)",
+                        marginTop: "24px"
+                    }}>
+                        <input
+                            style={{
+                                border: "none",
+                                outline: "none",
+                                backgroundColor: "#D9DFEB",
+                                borderRadius: "8px",
+                                height: "40px",
+                                width: "244px",
+                                fontSize: "14px",
+                                padding: "11px 16px",
+                                color: "#7A7D7E"
+                            }}
+                            placeholder="Id"
+                        />
+                        <input
+                            style={{
+                                border: "none",
+                                outline: "none",
+                                backgroundColor: "#D9DFEB",
+                                borderRadius: "8px",
+                                height: "40px",
+                                width: "244px",
+                                fontSize: "14px",
+                                padding: "11px 16px",
+                                color: "#7A7D7E"
+                            }}
+                            placeholder="Name"
+                        />
+                        <Button sx={{
+                            backgroundColor: "#5285EC",
+                            borderRadius: "8px"
+                        }} variant="contained" onClick={handleLogin}>Login</Button>
+                    </Box>
                 </Card>
             </Box>
         )
