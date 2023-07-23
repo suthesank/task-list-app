@@ -18,6 +18,9 @@ export const modalstyle = {
 
 // A custom theme for this app
 const theme = createTheme({
+  typography: {
+    "fontFamily": `"Montserrat", sans-serif`,
+  },
   palette: {
     primary: {
       main: '#556cd6',
