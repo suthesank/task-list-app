@@ -1,10 +1,11 @@
 import * as React from "react"
 
 interface AppContextProps {
-    loginState: boolean | null;
-    setLoginState: React.Dispatch<React.SetStateAction<boolean | null>>;
-    handleLogin: () => void
+    loginState: boolean | null
+    setLoginState: React.Dispatch<React.SetStateAction<boolean | null>>
+    handleLogin: (id: string, name: string) => void
     handleLogout: () => void
+    userCreds: Record<string, string> | null
     data: Record<string, any> | null,
     setData: React.Dispatch<React.SetStateAction<Record<string, any> | null>>
     addNewTask: (title: string) => void
@@ -20,6 +21,7 @@ export const AppContext = React.createContext<AppContextProps>({
     setLoginState: () => { },
     handleLogin: () => { },
     handleLogout: () => { },
+    userCreds: null,
     data: null,
     setData: () => { },
     addNewTask: () => { },
@@ -31,6 +33,7 @@ export const AppContext = React.createContext<AppContextProps>({
 const AppContextProvider = (props: { children: React.ReactNode }) => {
     // Hold the shared state here
     const [loginState, setLoginState] = React.useState<null | boolean>(null)
+    const [userCreds, setUserCreds] = React.useState<Record<string, string> | null>(null)
     const [data, setData] = React.useState<Record<string, any> | null>(null)
 
     const dataInit = () => {
@@ -49,8 +52,13 @@ const AppContextProvider = (props: { children: React.ReactNode }) => {
         }
     }
 
-    const handleLogin = () => {
-        localStorage.setItem("loginCreds", "true")
+    const handleLogin = (id: string, name: string) => {
+        const userCreds = {
+            id,
+            name
+        }
+        localStorage.setItem("loginCreds", JSON.stringify(userCreds))
+        setUserCreds(userCreds)
         setLoginState(true)
         dataInit()
     }
@@ -117,8 +125,9 @@ const AppContextProvider = (props: { children: React.ReactNode }) => {
     }, [data])
 
     React.useEffect(() => {
-        const login_creds = localStorage.getItem("loginCreds");
-        if (login_creds) {
+        const loginCreds = localStorage.getItem("loginCreds");
+        if (loginCreds) {
+            setUserCreds(JSON.parse(loginCreds))
             setLoginState(true)
             dataInit()
         } else {
@@ -133,6 +142,7 @@ const AppContextProvider = (props: { children: React.ReactNode }) => {
                 setLoginState,
                 handleLogin,
                 handleLogout,
+                userCreds,
                 data,
                 setData,
                 addNewTask,

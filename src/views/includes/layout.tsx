@@ -6,7 +6,7 @@ import { useAppContext } from '../../context/context_provider';
 
 const Layout = () => {
 
-    const { handleLogout } = useAppContext()
+    const { handleLogout, userCreds } = useAppContext()
 
     return (
         <Box sx={{
@@ -33,11 +33,11 @@ const Layout = () => {
                         alignItems: "center"
                     }}>
                         <Avatar
-                            alt="Remy Sharp"
+                            alt={userCreds ? userCreds["name"] : ""}
                             src="/avatar.png"
                             sx={{ width: 48, height: 48 }}
                         />
-                        <Typography marginLeft="16px">Ali</Typography>
+                        <Typography fontSize="16px" color="#6D8187" marginLeft="16px">{userCreds ? userCreds["name"] : ""}</Typography>
                     </Box>
                     <Button onClick={handleLogout} sx={{ color: "#6D8187" }} >Logout</Button>
                 </Container>

@@ -5,20 +5,15 @@ import { useAppContext } from "../context/context_provider"
 
 const ProtectedRoute = () => {
 
-    const { loginState, setLoginState, setData, handleLogin } = useAppContext()
+    const { loginState, handleLogin } = useAppContext()
+    const idRef = React.useRef(null)
+    const nameRef = React.useRef(null)
 
-    React.useEffect(() => {
-        const login_creds = localStorage.getItem("loginCreds");
-        if (login_creds) {
-            setLoginState(true)
-            const todo_data = localStorage.getItem("todo_data")
-            if (todo_data) {
-                setData(JSON.parse(todo_data))
-            }
-        } else {
-            setLoginState(false)
+    const handleLoginButton = () => {
+        if (idRef.current && idRef.current["value"] && nameRef.current && nameRef.current["value"]) {
+            handleLogin(idRef.current["value"], nameRef.current["value"])
         }
-    }, [])
+    }
 
     if (loginState) {
         return (
@@ -50,6 +45,7 @@ const ProtectedRoute = () => {
                         marginTop: "24px"
                     }}>
                         <input
+                            ref={idRef}
                             style={{
                                 border: "none",
                                 outline: "none",
@@ -64,6 +60,7 @@ const ProtectedRoute = () => {
                             placeholder="Id"
                         />
                         <input
+                            ref={nameRef}
                             style={{
                                 border: "none",
                                 outline: "none",
@@ -80,7 +77,7 @@ const ProtectedRoute = () => {
                         <Button sx={{
                             backgroundColor: "#5285EC",
                             borderRadius: "8px"
-                        }} variant="contained" onClick={handleLogin}>Login</Button>
+                        }} variant="contained" onClick={handleLoginButton}>Login</Button>
                     </Box>
                 </Card>
             </Box>
