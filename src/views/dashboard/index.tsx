@@ -142,192 +142,208 @@ const Dashboard = () => {
         }
     }, [data, filteredTaskIds])
 
-    if (data && data["total"] > 0) {
-        return (
-            <>
-                <Stats data={data} />
-                <Box sx={{
-                    display: "flex",
-                    flexDirection: {
-                        xs: "column",
-                        md: "row"
-                    },
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    margin: {
-                        xs: "29px 0 16px",
-                        md: "34px 0 10px"
-                    }
-                }}>
-                    <Box>
-                        <Typography fontSize="20px" color="#537178">
-                            Tasks
-                        </Typography>
-                    </Box>
+    if (data) {
+        if (data["total"] > 0) {
+            // There are tasks attached to user
+            return (
+                <>
+                    <Stats data={data} />
                     <Box sx={{
                         display: "flex",
                         flexDirection: {
                             xs: "column",
                             md: "row"
                         },
-                        padding: {
-                            xs: "0 13px 0 15px",
-                            md: "unset"
-                        },
-                        width: {
-                            xs: "100%",
-                            md: "unset"
-                        },
-                        maxWidth: "450px"
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        margin: {
+                            xs: "29px 0 16px",
+                            md: "34px 0 10px"
+                        }
                     }}>
+                        <Box>
+                            <Typography fontSize="20px" color="#537178">
+                                Tasks
+                            </Typography>
+                        </Box>
                         <Box sx={{
+                            display: "flex",
+                            flexDirection: {
+                                xs: "column",
+                                md: "row"
+                            },
+                            padding: {
+                                xs: "0 13px 0 15px",
+                                md: "unset"
+                            },
                             width: {
                                 xs: "100%",
-                                md: "244px"
-                            }
+                                md: "unset"
+                            },
+                            maxWidth: "450px"
                         }}>
-                            <Input
+                            <Box sx={{
+                                width: {
+                                    xs: "100%",
+                                    md: "244px"
+                                }
+                            }}>
+                                <Input
+                                    style={{
+                                        border: "none",
+                                        outline: "none",
+                                        background: "#D9DFEB",
+                                        borderRadius: "8px",
+                                        height: "40px",
+                                        width: "100%",
+                                        fontSize: "14px",
+                                        paddingLeft: "15px"
+                                    }}
+                                    startAdornment={
+                                        <InputAdornment position="start">
+                                            <SearchIcon style={{
+                                                marginRight: "9px"
+                                            }} />
+                                        </InputAdornment>
+                                    }
+                                    disableUnderline={true}
+                                    placeholder="Search by task name"
+                                    onChange={handleFilter}
+                                />
+                            </Box>
+                            <Button
+                                sx={{
+                                    textTransform: "unset",
+                                    height: "40px",
+                                    borderRadius: "8px",
+                                    width: {
+                                        md: "124px"
+                                    },
+                                    marginLeft: {
+                                        md: "12px"
+                                    },
+                                    marginTop: {
+                                        xs: "8px",
+                                        md: "unset"
+                                    },
+                                    backgroundColor: "#5285EC"
+                                }}
+                                variant="contained"
+                                onClick={handleOpenNewTaskModel}
+                            >
+                                + New Task
+                            </Button>
+                        </Box>
+                    </Box>
+                    {rows && <ListTable rows={rows} />}
+                    <Modal
+                        open={openNewTaskModel}
+                        onClose={handleCloseNewTaskModel}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={modalstyle}>
+                            <Typography fontSize="20px" color="#537178" marginBottom="24px">
+                                + New Task
+                            </Typography>
+                            <input
+                                ref={newTaskTitleRef}
                                 style={{
                                     border: "none",
                                     outline: "none",
-                                    background: "#D9DFEB",
+                                    backgroundColor: "#EEF1F8",
                                     borderRadius: "8px",
                                     height: "40px",
-                                    width: "100%",
+                                    width: "244px",
                                     fontSize: "14px",
-                                    paddingLeft: "15px"
+                                    padding: "11px 16px",
+                                    color: "#7A7D7E"
                                 }}
-                                startAdornment={
-                                    <InputAdornment position="start">
-                                        <SearchIcon style={{
-                                            marginRight: "9px"
-                                        }} />
-                                    </InputAdornment>
-                                }
-                                disableUnderline={true}
-                                placeholder="Search by task name"
-                                onChange={handleFilter}
+                                placeholder="Task Name"
                             />
-                        </Box>
-                        <Button
-                            sx={{
-                                textTransform: "unset",
-                                height: "40px",
-                                borderRadius: "8px",
-                                width: {
-                                    md: "124px"
-                                },
-                                marginLeft: {
-                                    md: "12px"
-                                },
-                                marginTop: {
-                                    xs: "8px",
-                                    md: "unset"
-                                },
-                                backgroundColor: "#5285EC"
-                            }}
-                            variant="contained"
-                            onClick={handleOpenNewTaskModel}
-                        >
-                            + New Task
-                        </Button>
-                    </Box>
-                </Box>
-                {rows && <ListTable rows={rows} />}
-                <Modal
-                    open={openNewTaskModel}
-                    onClose={handleCloseNewTaskModel}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                >
-                    <Box sx={modalstyle}>
-                        <Typography fontSize="20px" color="#537178" marginBottom="24px">
-                            + New Task
-                        </Typography>
-                        <input
-                            ref={newTaskTitleRef}
-                            style={{
-                                border: "none",
-                                outline: "none",
-                                backgroundColor: "#EEF1F8",
-                                borderRadius: "8px",
-                                height: "40px",
-                                width: "244px",
-                                fontSize: "14px",
-                                padding: "11px 16px",
-                                color: "#7A7D7E"
-                            }}
-                            placeholder="Task Name"
-                        />
-                        <Button
-                            sx={{
-                                textTransform: "unset",
-                                height: "40px",
-                                borderRadius: "8px",
-                                width: "100%",
-                                backgroundColor: "#5285EC",
-                                marginTop: "12px"
-                            }}
-                            variant="contained"
-                            onClick={handleAddNewTask}
-                        >
-                            + New Task
-                        </Button>
+                            <Button
+                                sx={{
+                                    textTransform: "unset",
+                                    height: "40px",
+                                    borderRadius: "8px",
+                                    width: "100%",
+                                    backgroundColor: "#5285EC",
+                                    marginTop: "12px"
+                                }}
+                                variant="contained"
+                                onClick={handleAddNewTask}
+                            >
+                                + New Task
+                            </Button>
 
-                    </Box>
-                </Modal>
-                <Modal
-                    open={openEditTaskModel}
-                    onClose={handleCloseEditTaskModel}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                >
-                    <Box sx={modalstyle}>
-                        <Typography fontSize="20px" color="#537178" marginBottom="24px">
-                            Edit Task
-                        </Typography>
-                        <input
-                            ref={editTaskTitleRef}
-                            style={{
-                                border: "none",
-                                outline: "none",
-                                backgroundColor: "#EEF1F8",
-                                borderRadius: "8px",
-                                height: "40px",
-                                width: "244px",
-                                fontSize: "14px",
-                                padding: "11px 16px",
-                                color: "#7A7D7E"
-                            }}
-                            placeholder="Task Name"
-                        />
-                        <Button
-                            sx={{
-                                textTransform: "unset",
-                                height: "40px",
-                                borderRadius: "8px",
-                                width: "100%",
-                                backgroundColor: "#5285EC",
-                                marginTop: "12px"
-                            }}
-                            variant="contained"
-                            onClick={handleEditTaskTitle}
-                        >
-                            Edit Task
-                        </Button>
-                    </Box>
-                </Modal>
-            </>
-        )
+                        </Box>
+                    </Modal>
+                    <Modal
+                        open={openEditTaskModel}
+                        onClose={handleCloseEditTaskModel}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={modalstyle}>
+                            <Typography fontSize="20px" color="#537178" marginBottom="24px">
+                                Edit Task
+                            </Typography>
+                            <input
+                                ref={editTaskTitleRef}
+                                style={{
+                                    border: "none",
+                                    outline: "none",
+                                    backgroundColor: "#EEF1F8",
+                                    borderRadius: "8px",
+                                    height: "40px",
+                                    width: "244px",
+                                    fontSize: "14px",
+                                    padding: "11px 16px",
+                                    color: "#7A7D7E"
+                                }}
+                                placeholder="Task Name"
+                            />
+                            <Button
+                                sx={{
+                                    textTransform: "unset",
+                                    height: "40px",
+                                    borderRadius: "8px",
+                                    width: "100%",
+                                    backgroundColor: "#5285EC",
+                                    marginTop: "12px"
+                                }}
+                                variant="contained"
+                                onClick={handleEditTaskTitle}
+                            >
+                                Edit Task
+                            </Button>
+                        </Box>
+                    </Modal>
+                </>
+            )
+        } else {
+            // There are no tasks attached to user
+            return (
+                <NoTask
+                    openNewTaskModel={openNewTaskModel}
+                    handleCloseNewTaskModel={handleCloseNewTaskModel}
+                    handleOpenNewTaskModel={handleOpenNewTaskModel}
+                    newTaskTitleRef={newTaskTitleRef}
+                    handleAddNewTask={handleAddNewTask}
+                />
+            )
+        }
     } else {
+        // Fallback container/skeleton when data is not available yet (loading/fetching etc.)
         return (
-            <NoTask
-                openNewTaskModel={openNewTaskModel}
-                handleCloseNewTaskModel={handleCloseNewTaskModel}
-                handleOpenNewTaskModel={handleOpenNewTaskModel}
-                newTaskTitleRef={newTaskTitleRef}
-                handleAddNewTask={handleAddNewTask}
-            />
+            <Box sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "100%"
+            }}>
+                <Typography>Loading...</Typography>
+            </Box >
         )
     }
 }

@@ -15,11 +15,11 @@ const ProtectedRoute = () => {
         }
     }
 
-    if (loginState) {
+    if (loginState === true) {
         return (
             <Outlet />
         )
-    } else {
+    } else if (loginState === false) {
         return (
             <Box sx={{
                 display: "flex",
@@ -83,6 +83,8 @@ const ProtectedRoute = () => {
                 </Card>
             </Box>
         )
+    } else {
+        return <></>
     }
 }
 

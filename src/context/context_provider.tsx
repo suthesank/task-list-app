@@ -1,5 +1,8 @@
 import * as React from "react"
 
+// for demo purposes
+const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+
 interface AppContextProps {
     loginState: boolean | null
     setLoginState: React.Dispatch<React.SetStateAction<boolean | null>>
@@ -31,12 +34,13 @@ export const AppContext = React.createContext<AppContextProps>({
 });
 
 const AppContextProvider = (props: { children: React.ReactNode }) => {
-    // Hold the shared state here
     const [loginState, setLoginState] = React.useState<null | boolean>(null)
     const [userCreds, setUserCreds] = React.useState<Record<string, string> | null>(null)
     const [data, setData] = React.useState<Record<string, any> | null>(null)
 
-    const dataInit = () => {
+    const dataInit = async () => {
+        // Delay to simulate api call delays
+        await delay(3000)
         const todo_data = localStorage.getItem("todo_data")
         if (todo_data) {
             setData(JSON.parse(todo_data))

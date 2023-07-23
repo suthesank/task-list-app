@@ -83,6 +83,9 @@ const Stats = (props: {
                             return (
                                 <li
                                     key={todo_id}
+                                    style={{
+                                        color: "#8F9EA2",
+                                    }}
                                 >
                                     <Typography sx={{
                                         color: "#8F9EA2",
