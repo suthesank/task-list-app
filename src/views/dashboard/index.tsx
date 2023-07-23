@@ -6,14 +6,25 @@ import { ReactComponent as SearchIcon } from "../../images/svg/search.svg"
 import Stats from "./_includes/stats"
 import ListTable from "./_includes/table"
 import NoTask from "./_includes/no_task"
+import { useAppContext } from "../../context/context_provider"
+import { modalstyle } from "../../theme"
 
 
 const TodoRowItem = (props: {
     data: Record<string, any>
     todo_id: string
-    handleOpenEditTaskModel: () => void
+    handleOpenEditTaskModel: (task_id: string | null) => void
+    handleDeleteTask: (task_id: string) => void
+    handleUpdateTaskStatus: (task_id: string, status: string) => void
 }) => {
     const { data, todo_id } = props
+    const handleCheckStatusOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.checked) {
+            props.handleUpdateTaskStatus(event.target.id, "completed")
+        } else {
+            props.handleUpdateTaskStatus(event.target.id, "pending")
+        }
+    };
     return (
         <Box
             sx={{
@@ -29,8 +40,11 @@ const TodoRowItem = (props: {
                 alignItems: "center"
             }}>
                 <Checkbox
+                    id={todo_id}
                     checked={data["list"][todo_id]["status"] == "completed"}
-                    inputProps={{ 'aria-label': 'controlled' }} />
+                    inputProps={{ 'aria-label': 'controlled' }}
+                    onChange={handleCheckStatusOnChange}
+                />
 
                 <Typography
                     fontSize="20px"
@@ -48,10 +62,10 @@ const TodoRowItem = (props: {
                 alignItems: "center"
             }}>
                 <Box width="16px" height="18px">
-                    <EditIcon onClick={props.handleOpenEditTaskModel} />
+                    <EditIcon onClick={() => props.handleOpenEditTaskModel(todo_id)} />
                 </Box>
                 <Box ml="16px" width="16px" height="18px">
-                    <DeleteIcon />
+                    <DeleteIcon onClick={() => props.handleDeleteTask(todo_id)} />
                 </Box>
             </Box>
         </Box>
@@ -60,52 +74,60 @@ const TodoRowItem = (props: {
 
 
 const Dashboard = () => {
+    const { data, addNewTask, editTaskTitle, deleteTask, updateTaskStatus } = useAppContext()
+
 
     const [rows, setRows] = React.useState<React.JSX.Element[] | null>(null)
-    const [data, setData] = React.useState<Record<string, any> | null>(null)
+    const newTaskTitleRef = React.useRef(null)
+    const editTaskTitleRef = React.useRef(null)
+
     const [openNewTaskModel, setOpenNewTaskModel] = React.useState(false);
     const [openEditTaskModel, setOpenEditTaskModel] = React.useState(false);
+    const [taskIdToEdit, setTaskIdToEdit] = React.useState<string | null>(null)
+
     const handleOpenNewTaskModel = () => setOpenNewTaskModel(true);
     const handleCloseNewTaskModel = () => setOpenNewTaskModel(false);
-    const handleOpenEditTaskModel = () => setOpenEditTaskModel(true);
+    const handleOpenEditTaskModel = (task_id: string | null) => {
+        if (task_id) {
+            setTaskIdToEdit(task_id)
+            setOpenEditTaskModel(true);
+        }
+    }
     const handleCloseEditTaskModel = () => setOpenEditTaskModel(false);
 
-    const modalstyle = {
-        position: 'absolute' as 'absolute',
-        top: {
-            xs: "26%",
-            md: "50%"
-        },
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: "296px",
-        backgroundColor: "#FFFFFF",
-        boxShadow: "0px 3px 6px #00000029",
-        padding: "24px 24px 29px 24px",
-        borderRadius: "12px"
+    const handleAddNewTask = () => {
+        if (newTaskTitleRef.current && newTaskTitleRef.current["value"]) {
+            setOpenNewTaskModel(false)
+            addNewTask(newTaskTitleRef.current["value"])
+        }
+    }
+
+    const handleEditTaskTitle = () => {
+        if (editTaskTitleRef.current && editTaskTitleRef.current["value"] && taskIdToEdit) {
+            editTaskTitle(taskIdToEdit, editTaskTitleRef.current["value"])
+        }
+    }
+
+    const handleDeleteTask = (task_id: string) => {
+        deleteTask(task_id)
+    }
+
+    const handleUpdateTaskStatus = (task_id: string, status: string) => {
+        updateTaskStatus(task_id, status)
     }
 
     React.useEffect(() => {
-        const todo_data = localStorage.getItem("todo_data")
-        if (todo_data) {
-            setData(JSON.parse(todo_data))
-        }
-    }, [])
-
-    React.useEffect(() => {
         if (data && data["total"] > 0) {
-            console.log(data)
             let int_rows: React.JSX.Element[] = []
             Object.keys(data["list"]).map((todo_id, idx) => {
                 int_rows.push(
-                    <TodoRowItem data={data} todo_id={todo_id} handleOpenEditTaskModel={handleOpenEditTaskModel} key={idx} />
+                    <TodoRowItem data={data} todo_id={todo_id} handleOpenEditTaskModel={handleOpenEditTaskModel} handleDeleteTask={handleDeleteTask} handleUpdateTaskStatus={handleUpdateTaskStatus} key={idx} />
                 )
             })
             setRows(int_rows.reverse())
         } else {
             setRows(null)
         }
-
     }, [data])
 
     if (data && data["total"] > 0) {
@@ -209,6 +231,7 @@ const Dashboard = () => {
                             + New Task
                         </Typography>
                         <input
+                            ref={newTaskTitleRef}
                             style={{
                                 border: "none",
                                 outline: "none",
@@ -231,6 +254,7 @@ const Dashboard = () => {
                                 marginTop: "12px"
                             }}
                             variant="contained"
+                            onClick={handleAddNewTask}
                         >
                             + New Task
                         </Button>
@@ -248,6 +272,7 @@ const Dashboard = () => {
                             Edit Task
                         </Typography>
                         <input
+                            ref={editTaskTitleRef}
                             style={{
                                 border: "none",
                                 outline: "none",
@@ -270,17 +295,23 @@ const Dashboard = () => {
                                 marginTop: "12px"
                             }}
                             variant="contained"
+                            onClick={handleEditTaskTitle}
                         >
                             Edit Task
                         </Button>
-
                     </Box>
                 </Modal>
             </>
         )
     } else {
         return (
-            <NoTask />
+            <NoTask
+                openNewTaskModel={openNewTaskModel}
+                handleCloseNewTaskModel={handleCloseNewTaskModel}
+                handleOpenNewTaskModel={handleOpenNewTaskModel}
+                newTaskTitleRef={newTaskTitleRef}
+                handleAddNewTask={handleAddNewTask}
+            />
         )
     }
 }

@@ -1,14 +1,12 @@
 import { Avatar, Box, Button, Container, Typography } from '@mui/material';
 import * as React from 'react';
 import { Outlet } from 'react-router-dom';
+import { useAppContext } from '../../context/context_provider';
 
 
 const Layout = () => {
 
-    const handleLogout = () => {
-        localStorage.removeItem("loginCreds")
-        window.location.reload()
-    }
+    const { handleLogout } = useAppContext()
 
     return (
         <Box sx={{

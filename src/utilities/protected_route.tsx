@@ -5,17 +5,16 @@ import { useAppContext } from "../context/context_provider"
 
 const ProtectedRoute = () => {
 
-    const { loginState, setLoginState } = useAppContext()
-
-    const handleLogin = () => {
-        localStorage.setItem("loginCreds", "true")
-        setLoginState(true)
-    }
+    const { loginState, setLoginState, setData, handleLogin } = useAppContext()
 
     React.useEffect(() => {
         const login_creds = localStorage.getItem("loginCreds");
         if (login_creds) {
             setLoginState(true)
+            const todo_data = localStorage.getItem("todo_data")
+            if (todo_data) {
+                setData(JSON.parse(todo_data))
+            }
         } else {
             setLoginState(false)
         }
