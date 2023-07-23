@@ -78,6 +78,7 @@ const Dashboard = () => {
 
 
     const [rows, setRows] = React.useState<React.JSX.Element[] | null>(null)
+    const [filteredTaskIds, setFilteredTaskIds] = React.useState<string[] | null>(null)
     const newTaskTitleRef = React.useRef(null)
     const editTaskTitleRef = React.useRef(null)
 
@@ -116,10 +117,21 @@ const Dashboard = () => {
         updateTaskStatus(task_id, status)
     }
 
+    const handleFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (data && event.target.value) {
+            const intFilterBy: string = event.target.value
+            const filteredTaskIds = Object.keys(data["list"]).filter(taskId => data["list"][taskId]["title"].includes(intFilterBy))
+            setFilteredTaskIds(filteredTaskIds)
+        } else {
+            setFilteredTaskIds(null)
+        }
+    }
+
     React.useEffect(() => {
         if (data && data["total"] > 0) {
             let int_rows: React.JSX.Element[] = []
-            Object.keys(data["list"]).map((todo_id, idx) => {
+            const taskIds = filteredTaskIds ? filteredTaskIds : Object.keys(data["list"])
+            taskIds.map((todo_id, idx) => {
                 int_rows.push(
                     <TodoRowItem data={data} todo_id={todo_id} handleOpenEditTaskModel={handleOpenEditTaskModel} handleDeleteTask={handleDeleteTask} handleUpdateTaskStatus={handleUpdateTaskStatus} key={idx} />
                 )
@@ -128,7 +140,7 @@ const Dashboard = () => {
         } else {
             setRows(null)
         }
-    }, [data])
+    }, [data, filteredTaskIds])
 
     if (data && data["total"] > 0) {
         return (
@@ -194,6 +206,7 @@ const Dashboard = () => {
                                 }
                                 disableUnderline={true}
                                 placeholder="Search by task name"
+                                onChange={handleFilter}
                             />
                         </Box>
                         <Button
