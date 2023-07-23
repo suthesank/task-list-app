@@ -211,6 +211,7 @@ const Dashboard = () => {
                         </Box>
                         <Button
                             sx={{
+                                textTransform: "unset",
                                 height: "40px",
                                 borderRadius: "8px",
                                 width: {
@@ -260,6 +261,7 @@ const Dashboard = () => {
                         />
                         <Button
                             sx={{
+                                textTransform: "unset",
                                 height: "40px",
                                 borderRadius: "8px",
                                 width: "100%",
@@ -301,6 +303,7 @@ const Dashboard = () => {
                         />
                         <Button
                             sx={{
+                                textTransform: "unset",
                                 height: "40px",
                                 borderRadius: "8px",
                                 width: "100%",

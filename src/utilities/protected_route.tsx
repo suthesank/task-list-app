@@ -75,6 +75,7 @@ const ProtectedRoute = () => {
                             placeholder="Name"
                         />
                         <Button sx={{
+                            textTransform: "unset",
                             backgroundColor: "#5285EC",
                             borderRadius: "8px"
                         }} variant="contained" onClick={handleLoginButton}>Login</Button>

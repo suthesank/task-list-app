@@ -83,19 +83,24 @@ const Stats = (props: {
                             return (
                                 <li
                                     key={todo_id}
-                                    style={{
+                                >
+                                    <Typography sx={{
                                         color: "#8F9EA2",
                                         textDecoration: data["list"][todo_id]["status"] == "completed" ? "line-through" : "unset",
                                         textDecorationThickness: "2px",
                                         textDecorationColor: "#707070",
-                                    }}
-                                >{data["list"][todo_id]["title"]}</li>
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                        whiteSpace: "nowrap"
+                                    }}>
+                                        {data["list"][todo_id]["title"]}
+                                    </Typography>
+                                </li>
                             )
                         })}
                     </ul>
                 </>
             </StatsCard>
-
 
             <StatsCard>
                 <Box sx={{

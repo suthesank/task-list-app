@@ -39,7 +39,7 @@ const Layout = () => {
                         />
                         <Typography fontSize="16px" color="#6D8187" marginLeft="16px">{userCreds ? userCreds["name"] : ""}</Typography>
                     </Box>
-                    <Button onClick={handleLogout} sx={{ color: "#6D8187" }} >Logout</Button>
+                    <Button onClick={handleLogout} sx={{ textTransform: "unset", color: "#6D8187" }} >Logout</Button>
                 </Container>
             </Box>
             <Box sx={{

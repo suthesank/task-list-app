@@ -40,6 +40,7 @@ const NoTask = (props: {
                     <Typography fontSize="20px" color="#537178">You have no task.</Typography>
                     <Button
                         sx={{
+                            textTransform: "unset",
                             height: "40px",
                             borderRadius: "8px",
                             width: "124px",
