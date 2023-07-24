@@ -49,7 +49,7 @@ const ProtectedRoute = () => {
                             style={{
                                 border: "none",
                                 outline: "none",
-                                backgroundColor: "#D9DFEB",
+                                backgroundColor: "#EEF1F8",
                                 borderRadius: "8px",
                                 height: "40px",
                                 width: "244px",
@@ -64,7 +64,7 @@ const ProtectedRoute = () => {
                             style={{
                                 border: "none",
                                 outline: "none",
-                                backgroundColor: "#D9DFEB",
+                                backgroundColor: "#EEF1F8",
                                 borderRadius: "8px",
                                 height: "40px",
                                 width: "244px",
