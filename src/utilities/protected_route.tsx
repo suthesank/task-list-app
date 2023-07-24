@@ -35,6 +35,7 @@ const ProtectedRoute = () => {
                     backgroundColor: "white",
                     padding: "24px 24px 33px 24px",
                     borderRadius: "12px",
+                    boxShadow: "0px 3px 6px #00000029"
                 }}>
                     <Typography fontSize="20px" color="#537178">Login</Typography>
 
@@ -55,7 +56,8 @@ const ProtectedRoute = () => {
                                 width: "244px",
                                 fontSize: "14px",
                                 padding: "11px 16px",
-                                color: "#7A7D7E"
+                                color: "#7A7D7E",
+                                fontFamily: "'Montserrat',sans-serif"
                             }}
                             placeholder="Id"
                         />
@@ -70,7 +72,8 @@ const ProtectedRoute = () => {
                                 width: "244px",
                                 fontSize: "14px",
                                 padding: "11px 16px",
-                                color: "#7A7D7E"
+                                color: "#7A7D7E",
+                                fontFamily: "'Montserrat',sans-serif"
                             }}
                             placeholder="Name"
                         />

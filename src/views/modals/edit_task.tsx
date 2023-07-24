@@ -28,7 +28,8 @@ const EditTaskModal = (props: {
                         width: "244px",
                         fontSize: "14px",
                         padding: "11px 16px",
-                        color: "#7A7D7E"
+                        color: "#7A7D7E",
+                        fontFamily: "'Montserrat',sans-serif"
                     }}
                     placeholder="Task Name"
                 />

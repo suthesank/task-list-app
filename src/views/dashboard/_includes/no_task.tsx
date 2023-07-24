@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Box, Button, Card, Modal, Typography } from "@mui/material"
-import { modalstyle } from "../../../theme"
+import NewTaskModal from "../../modals/new_task"
 
 const NoTask = (props: {
     openNewTaskModel: boolean,
@@ -54,47 +54,12 @@ const NoTask = (props: {
                     </Button>
                 </Card>
             </Box>
-            <Modal
-                open={props.openNewTaskModel}
-                onClose={props.handleCloseNewTaskModel}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={modalstyle}>
-                    <Typography fontSize="20px" color="#537178" marginBottom="24px">
-                        + New Task
-                    </Typography>
-                    <input
-                        ref={props.newTaskTitleRef}
-                        style={{
-                            border: "none",
-                            outline: "none",
-                            backgroundColor: "#EEF1F8",
-                            borderRadius: "8px",
-                            height: "40px",
-                            width: "244px",
-                            fontSize: "14px",
-                            padding: "11px 16px",
-                            color: "#7A7D7E"
-                        }}
-                        placeholder="Task Name"
-                    />
-                    <Button
-                        sx={{
-                            height: "40px",
-                            borderRadius: "8px",
-                            width: "100%",
-                            backgroundColor: "#5285EC",
-                            marginTop: "12px"
-                        }}
-                        variant="contained"
-                        onClick={props.handleAddNewTask}
-                    >
-                        + New Task
-                    </Button>
-
-                </Box>
-            </Modal>
+            <NewTaskModal
+                openNewTaskModel={props.openNewTaskModel}
+                handleCloseNewTaskModel={props.handleCloseNewTaskModel}
+                newTaskTitleRef={props.newTaskTitleRef}
+                handleAddNewTask={props.handleAddNewTask}
+            />
         </>
     )
 }
