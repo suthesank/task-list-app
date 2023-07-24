@@ -1,77 +1,12 @@
 import * as React from "react"
-import { Box, Button, Checkbox, Input, InputAdornment, Modal, Typography } from "@mui/material"
-import { ReactComponent as DeleteIcon } from "../../images/svg/delete.svg"
-import { ReactComponent as EditIcon } from "../../images/svg/edit.svg"
-import { ReactComponent as SearchIcon } from "../../images/svg/search.svg"
+import { Box, Typography } from "@mui/material"
 import Stats from "./_includes/stats"
-import ListTable from "./_includes/table"
+import ListTable, { TodoRowItem } from "./_includes/table"
 import NoTask from "./_includes/no_task"
 import { useAppContext } from "../../context/context_provider"
-import { modalstyle } from "../../theme"
-
-
-const TodoRowItem = (props: {
-    data: Record<string, any>
-    todo_id: string
-    handleOpenEditTaskModel: (task_id: string | null) => void
-    handleDeleteTask: (task_id: string) => void
-    handleUpdateTaskStatus: (task_id: string, status: string) => void
-}) => {
-    const { data, todo_id } = props
-    const handleCheckStatusOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.checked) {
-            props.handleUpdateTaskStatus(event.target.id, "completed")
-        } else {
-            props.handleUpdateTaskStatus(event.target.id, "pending")
-        }
-    };
-    return (
-        <Box
-            sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                width: "100%"
-            }}
-        >
-            <Box sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center"
-            }}>
-                <Checkbox
-                    id={todo_id}
-                    checked={data["list"][todo_id]["status"] == "completed"}
-                    inputProps={{ 'aria-label': 'controlled' }}
-                    onChange={handleCheckStatusOnChange}
-                />
-
-                <Typography
-                    fontSize="20px"
-                    color={data["list"][todo_id]["status"] == "completed" ? "#537178" : "#5285EC"}
-                    sx={{
-                        textDecoration: data["list"][todo_id]["status"] == "completed" ? "line-through" : "unset",
-                        textDecorationThickness: "2px",
-                        textDecorationColor: "#707070"
-                    }}
-                >{data["list"][todo_id]["title"]}</Typography>
-            </Box>
-            <Box sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center"
-            }}>
-                <Box width="16px" height="18px">
-                    <EditIcon onClick={() => props.handleOpenEditTaskModel(todo_id)} />
-                </Box>
-                <Box ml="16px" width="16px" height="18px">
-                    <DeleteIcon onClick={() => props.handleDeleteTask(todo_id)} />
-                </Box>
-            </Box>
-        </Box>
-    )
-}
-
+import NewTaskModal from "../modals/new_task"
+import EditTaskModal from "../modals/edit_task"
+import SearchBar from "./_includes/search_bar"
 
 const Dashboard = () => {
     const { data, addNewTask, editTaskTitle, deleteTask, updateTaskStatus } = useAppContext()
@@ -148,177 +83,24 @@ const Dashboard = () => {
             return (
                 <>
                     <Stats data={data} />
-                    <Box sx={{
-                        display: "flex",
-                        flexDirection: {
-                            xs: "column",
-                            md: "row"
-                        },
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        margin: {
-                            xs: "29px 0 16px",
-                            md: "34px 0 10px"
-                        }
-                    }}>
-                        <Box>
-                            <Typography fontSize="20px" color="#537178">
-                                Tasks
-                            </Typography>
-                        </Box>
-                        <Box sx={{
-                            display: "flex",
-                            flexDirection: {
-                                xs: "column",
-                                md: "row"
-                            },
-                            padding: {
-                                xs: "0 13px 0 15px",
-                                md: "unset"
-                            },
-                            width: {
-                                xs: "100%",
-                                md: "unset"
-                            },
-                            maxWidth: "450px"
-                        }}>
-                            <Box sx={{
-                                width: {
-                                    xs: "100%",
-                                    md: "244px"
-                                }
-                            }}>
-                                <Input
-                                    style={{
-                                        border: "none",
-                                        outline: "none",
-                                        background: "#D9DFEB",
-                                        borderRadius: "8px",
-                                        height: "40px",
-                                        width: "100%",
-                                        fontSize: "14px",
-                                        paddingLeft: "15px"
-                                    }}
-                                    startAdornment={
-                                        <InputAdornment position="start">
-                                            <SearchIcon style={{
-                                                marginRight: "9px"
-                                            }} />
-                                        </InputAdornment>
-                                    }
-                                    disableUnderline={true}
-                                    placeholder="Search by task name"
-                                    onChange={handleFilter}
-                                />
-                            </Box>
-                            <Button
-                                sx={{
-                                    textTransform: "unset",
-                                    height: "40px",
-                                    borderRadius: "8px",
-                                    width: {
-                                        md: "124px"
-                                    },
-                                    marginLeft: {
-                                        md: "12px"
-                                    },
-                                    marginTop: {
-                                        xs: "8px",
-                                        md: "unset"
-                                    },
-                                    backgroundColor: "#5285EC"
-                                }}
-                                variant="contained"
-                                onClick={handleOpenNewTaskModel}
-                            >
-                                + New Task
-                            </Button>
-                        </Box>
-                    </Box>
+                    <SearchBar
+                        handleFilter={handleFilter}
+                        handleOpenNewTaskModel={handleOpenNewTaskModel}
+                    />
                     {rows && <ListTable rows={rows} />}
-                    <Modal
-                        open={openNewTaskModel}
-                        onClose={handleCloseNewTaskModel}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
-                    >
-                        <Box sx={modalstyle}>
-                            <Typography fontSize="20px" color="#537178" marginBottom="24px">
-                                + New Task
-                            </Typography>
-                            <input
-                                ref={newTaskTitleRef}
-                                style={{
-                                    border: "none",
-                                    outline: "none",
-                                    backgroundColor: "#EEF1F8",
-                                    borderRadius: "8px",
-                                    height: "40px",
-                                    width: "244px",
-                                    fontSize: "14px",
-                                    padding: "11px 16px",
-                                    color: "#7A7D7E"
-                                }}
-                                placeholder="Task Name"
-                            />
-                            <Button
-                                sx={{
-                                    textTransform: "unset",
-                                    height: "40px",
-                                    borderRadius: "8px",
-                                    width: "100%",
-                                    backgroundColor: "#5285EC",
-                                    marginTop: "12px"
-                                }}
-                                variant="contained"
-                                onClick={handleAddNewTask}
-                            >
-                                + New Task
-                            </Button>
 
-                        </Box>
-                    </Modal>
-                    <Modal
-                        open={openEditTaskModel}
-                        onClose={handleCloseEditTaskModel}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
-                    >
-                        <Box sx={modalstyle}>
-                            <Typography fontSize="20px" color="#537178" marginBottom="24px">
-                                Edit Task
-                            </Typography>
-                            <input
-                                ref={editTaskTitleRef}
-                                style={{
-                                    border: "none",
-                                    outline: "none",
-                                    backgroundColor: "#EEF1F8",
-                                    borderRadius: "8px",
-                                    height: "40px",
-                                    width: "244px",
-                                    fontSize: "14px",
-                                    padding: "11px 16px",
-                                    color: "#7A7D7E"
-                                }}
-                                placeholder="Task Name"
-                            />
-                            <Button
-                                sx={{
-                                    textTransform: "unset",
-                                    height: "40px",
-                                    borderRadius: "8px",
-                                    width: "100%",
-                                    backgroundColor: "#5285EC",
-                                    marginTop: "12px"
-                                }}
-                                variant="contained"
-                                onClick={handleEditTaskTitle}
-                            >
-                                Edit Task
-                            </Button>
-                        </Box>
-                    </Modal>
+                    <NewTaskModal
+                        openNewTaskModel={openNewTaskModel}
+                        handleCloseNewTaskModel={handleCloseNewTaskModel}
+                        newTaskTitleRef={newTaskTitleRef}
+                        handleAddNewTask={handleAddNewTask}
+                    />
+                    <EditTaskModal
+                        openEditTaskModel={openEditTaskModel}
+                        handleCloseEditTaskModel={handleCloseEditTaskModel}
+                        editTaskTitleRef={editTaskTitleRef}
+                        handleEditTaskTitle={handleEditTaskTitle}
+                    />
                 </>
             )
         } else {
